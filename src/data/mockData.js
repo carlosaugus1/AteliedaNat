@@ -53,7 +53,7 @@ export const PRODUTOS = [
     id: 4, 
     nome: "Quadro nossas memórias ", 
     descricao: "Quadro com varal luminoso de fotos polaroids, contém 9 polaroids.",
-    isKit: false,
+    isKit: true,
     preco: 39.90, 
     categorias: ["Dia dos Namorados"], 
     imagem: "/produtos/dia-dos-namorados/quadro-nossas-memorias-00.jpeg",
@@ -92,10 +92,10 @@ export const PRODUTOS = [
   { 
     id: 7, 
     nome: "Rolo de Filme", 
-    descricao: "1 caixa de acrilico personalizada, 9 fotos, 1 cartão dia dos namorados.", 
+    descricao: "1 caixa de acrílico personalizada, 9 fotos, 1 cartão dia dos namorados.", 
     isKit: true,
     preco: 17.00, 
-    categorias: ["Dia dos Namorados", "Kits Criativos"], 
+    categorias: ["Dia dos Namorados"], 
     imagem: "/produtos/dia-dos-namorados/rolo-de-filme-00.jpg",
     imagensGaleria: [
       "/produtos/dia-dos-namorados/rolo-de-filme-00.jpg",
@@ -162,17 +162,84 @@ export const PRODUTOS = [
   },
   { 
     id: 13, 
-    nome: "Vela - Buquê de Rosa", 
-    descricao: "Uma vela aromática em forma de buque de rosa para criar um ambiente romântico + cartão do Dia dos Namorados.",
+    nome: "Vela - mini Buquê de Rosa", 
+    descricao: "Uma vela aromática em forma de mini buquê de rosa para criar um ambiente romântico. Acompanha um cartão do Dia dos Namorados.",
     isKit: false, 
     precoAntigo: 18.00,
     preco: 15.0, 
     categorias: ["Dia dos Namorados", "Velas"],
-    imagem: "/produtos/velas/vela-rosa-00.jpg",
+    imagem: "/produtos/velas/vela-rosa-01.jpg",
     imagensGaleria: [
+      "/produtos/velas/vela-rosa-01.jpg", 
       "/produtos/velas/vela-rosa-00.jpg",
     ]
   },
+    { 
+    id: 14, 
+    nome: "Vela - Love You", 
+    descricao: "Uma vela aromática para criar um ambiente romântico.",
+    isKit: false, 
+    preco: 32.0, 
+    categorias: ["Dia dos Namorados", "Velas"],
+    imagem: "/produtos/velas/vela-copo-01.jpg",
+    imagensGaleria: [
+      "/produtos/velas/vela-copo-00.jpg",
+      "/produtos/velas/vela-copo-01.jpg",
+    ]
+  },
+  { 
+    id: 15, 
+    nome: "Vela Coração", 
+    descricao: "Uma vela aromática para criar um ambiente romântico. Acompanha um cartão do Dia dos Namorados.",
+    isKit: false, 
+    preco: 10.0, 
+    categorias: ["Dia dos Namorados", "Velas"],
+    imagem: "/produtos/velas/vela-coracao-00.jpg",
+    imagensGaleria: [
+      "/produtos/velas/vela-coracao-00.jpg",
+      "/produtos/velas/vela-coracao-01.jpg",
+    ]
+  },
+  { 
+    id: 16, 
+    nome: "Vela Mensagem Secreta", 
+    descricao: "Uma vela aromática que com o passar do tempo acesa revela uma mensagem secreta personalizada. Acompanha um cartão do Dia dos Namorados.",
+    isKit: false, 
+    preco: 10.0, 
+    categorias: ["Dia dos Namorados", "Velas"],
+    imagem: "/produtos/velas/vela-lata-01.jpg",
+    imagensGaleria: [
+      "/produtos/velas/vela-lata-01.jpg",
+      "/produtos/velas/vela-lata-00.jpg",
+    ]
+  },
+  { 
+    id: 17, 
+    nome: "Caixa 10 motivos para te amar", 
+    descricao: "1 Foto do casal, 10 chocolates bis com frases personalizadas. Acompanha um cartão do Dia dos Namorados.",
+    isKit: true,
+    precoAntigo: 39.90,
+    preco: 32.00, 
+    categorias: ["Dia dos Namorados"],
+    imagem: "/produtos/dia-dos-namorados/caixa-10-motivos-00.jpeg",
+    imagensGaleria: [
+      "/produtos/dia-dos-namorados/caixa-10-motivos-00.jpeg",
+      "/produtos/dia-dos-namorados/caixa-10-motivos-01.jpeg",
+    ]
+  },
+  { 
+    id: 18, 
+    nome: "Chaveiro 10 motivos para te amar", 
+    descricao: "10 Fotos do casal com frase.",
+    isKit: true, 
+    preco: 19.90, 
+    categorias: ["Dia dos Namorados"],
+    imagem: "/produtos/dia-dos-namorados/chaveiro-10-motivos-00.jpg",
+    imagensGaleria: [
+      "/produtos/dia-dos-namorados/chaveiro-10-motivos-00.jpg",
+    ]
+  },
+  
 ];
 
 export const CARROSSEL_SLIDES = [
