@@ -4,10 +4,10 @@ export const CONFIG = {
 };
 
 export const CATEGORIAS = [
-  { id: 'namorados', nome: 'Dia dos Namorados', imagem: '/produtos/cesta1_dia_dos_namorados.jpg', especial: true },
+  { id: 'namorados', nome: 'Dia dos Namorados', imagem: '/produtos/dia-dos-namorados/caixa-coracao-01.jpg', especial: true },
   { id: 'cestas', nome: 'Cestas de Café', imagem: '/produtos/cesta_dia_das_mães.jpg' },
   { id: 'caixas', nome: 'Caixas Surpresa', imagem: '/produtos/caixas/caixa-surpres.jpg' },
-  { id: 'kits', nome: 'Kits Criativos', imagem: '/produtos/kitpalaroid.jpg' },
+  { id: 'kits', nome: 'Kits Criativos', imagem: '/produtos/dia-dos-namorados/kit-polaroid.jpg' },
   { id: 'velas', nome: 'Velas', imagem: '/produtos/velas/vela-01.jpg' }
 ];
 
@@ -117,11 +117,48 @@ export const PRODUTOS = [
   { 
     id: 9, 
     nome: "Chaveiro Potinho", 
-    descricao: "Te amo tanto que te guardei em um potinho.",
+    descricao: "Te amo tanto que te guardei num potinho.",
     isKit: false, 
     preco: 14.00, 
     categoria: "Dia dos Namorados", 
     imagem: "/produtos/dia-dos-namorados/potinho.jpg",
+  },
+
+    { 
+    id: 10, 
+    nome: "Potinho Bis", 
+    descricao: "Pote bis do nosso amor contém 8 bis com frases personalizadas.",
+    isKit: false, 
+    preco: 27.90, 
+    categoria: "Dia dos Namorados", 
+    imagem: "/produtos/dia-dos-namorados/pote-bis.jpg",
+    imagensGaleria: [
+      "/produtos/dia-dos-namorados/pote-bis.jpg",
+    ]
+  },
+      { 
+    id: 11, 
+    nome: "Kit 8 Polaroids", 
+    descricao: "Um pequeno kit com 8 polaroids para capturar momentos especiais.",
+    isKit: false, 
+    preco: 15.00, 
+    categoria: "Dia dos Namorados", 
+    imagem: "/produtos/dia-dos-namorados/kit-polaroid.jpg",
+    imagensGaleria: [
+      "/produtos/dia-dos-namorados/kit-polaroid.jpg",
+    ]
+  },
+      { 
+    id: 12, 
+    nome: "Chaveiro Álbum de Fotos", 
+    descricao: "Um chaveiro com mini álbum de fotos para guardar seus momentos especiais.",
+    isKit: false, 
+    preco: 19.90, 
+    categoria: "Dia dos Namorados", 
+    imagem: "/produtos/dia-dos-namorados/chaveiro-album.jpg",
+    imagensGaleria: [
+      "/produtos/dia-dos-namorados/chaveiro-album.jpg",
+    ]
   },
 ];
 
