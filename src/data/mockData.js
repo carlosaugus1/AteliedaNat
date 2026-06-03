@@ -5,10 +5,10 @@ export const CONFIG = {
 
 export const CATEGORIAS = [
   { id: 'namorados', nome: 'Dia dos Namorados', imagem: '/produtos/dia-dos-namorados/caixa-coracao-01.jpg', especial: true },
-  { id: 'cestas', nome: 'Cestas de Café', imagem: '/produtos/cesta_dia_das_mães.jpg' },
+  { id: 'cestas', nome: 'Cestas de Café', imagem: '/produtos/cestas/cesta-dia-das-maes-00.jpg' },
   { id: 'caixas', nome: 'Caixas Surpresa', imagem: '/produtos/caixas/caixa-surpres.jpg' },
   { id: 'kits', nome: 'Kits Criativos', imagem: '/produtos/dia-dos-namorados/kit-polaroid.jpg' },
-  { id: 'velas', nome: 'Velas', imagem: '/produtos/velas/vela-01.jpg' }
+  { id: 'velas', nome: 'Velas', imagem: '/produtos/velas/vela-copo-00.jpg' }
 ];
 
 export const PRODUTOS = [
@@ -17,9 +17,9 @@ export const PRODUTOS = [
     nome: "LOVEFLIX", 
     descricao: "2 mini coca-cola, 2 KitKat, 2 bombons de chocolate, 1 Pipoca de microondas, 4 vales do amor , 1 rolinho de filme personalizado com 9 fotos, 1 roleta do amor com sugestões de filmes para o casal, Arte Netflix personalizada com dados do casal.",
     isKit: true, 
-    precoAntigo: 189.90, // <--- PREÇO RISCADO AQUI
+    precoAntigo: 189.90, 
     preco: 159.90, 
-    categorias: ["Dia dos Namorados", "Kits Criativos"], // <--- DUAS CATEGORIAS AQUI
+    categorias: ["Dia dos Namorados", "Kits Criativos"], 
     imagem: "/produtos/dia-dos-namorados/loveflix-01.jpg", 
     imagensGaleria: [
       "/produtos/dia-dos-namorados/loveflix-01.jpg",
