@@ -13,6 +13,9 @@ export default function VitrineProdutos({ produtos, adicionarAoCarrinho, atualiz
         produtos.map((produto) => {
           const itemNoCarrinho = carrinho.find(item => item.id === produto.id);
           const quantidade = itemNoCarrinho ? itemNoCarrinho.quantidade : 0;
+          
+          // Prepara a lista de categorias para ser desenhada
+          const listaCategorias = produto.categorias ? produto.categorias : [produto.categoria];
 
           return (
             <div 
@@ -27,9 +30,19 @@ export default function VitrineProdutos({ produtos, adicionarAoCarrinho, atualiz
                   loading="lazy"
                   className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
                 />
-                <div className="absolute top-2 left-2 sm:top-4 sm:left-4 bg-white/90 backdrop-blur text-rose-600 text-[9px] sm:text-xs font-bold px-2 py-1 sm:px-3 sm:py-1 rounded-full uppercase tracking-wider shadow-sm">
-                  {produto.categoria}
+                
+                {/* Etiquetas de Categorias (Agora suporta múltiplas pílulas lado a lado) */}
+                <div className="absolute top-2 left-2 sm:top-4 sm:left-4 flex flex-wrap gap-1.5 max-w-[80%]">
+                  {listaCategorias.map((cat, index) => (
+                    <span 
+                      key={index} 
+                      className="bg-white/90 backdrop-blur text-rose-600 text-[9px] sm:text-xs font-bold px-2 py-1 sm:px-3 sm:py-1 rounded-full uppercase tracking-wider shadow-sm truncate max-w-full"
+                    >
+                      {cat}
+                    </span>
+                  ))}
                 </div>
+                
                 {quantidade > 0 && (
                   <div className="absolute top-2 right-2 sm:top-4 sm:right-4 bg-rose-500 text-white w-6 h-6 sm:w-8 sm:h-8 flex items-center justify-center rounded-full shadow-lg text-xs sm:text-base animate-in fade-in zoom-in-50">
                     <span className="font-bold">{quantidade}</span>
@@ -46,8 +59,15 @@ export default function VitrineProdutos({ produtos, adicionarAoCarrinho, atualiz
                 </p>
                 
                 <div className="flex items-center justify-between mt-auto pt-2 border-t border-stone-50" onClick={(e) => e.stopPropagation()}>
-                  <span className="text-sm sm:text-2xl font-bold text-rose-600 flex items-baseline gap-0.5">
-                    <span className="text-[10px] sm:text-sm font-normal">R$</span> {produto.preco.toFixed(2).replace('.', ',')}
+                  <span className="text-sm sm:text-2xl font-bold text-rose-600 flex items-baseline gap-1">
+                    {/* Exibe o preço antigo cortado se ele existir */}
+                    {produto.precoAntigo && (
+                      <span className="text-[10px] sm:text-sm text-stone-400 line-through font-normal">
+                        R$ {produto.precoAntigo.toFixed(2).replace('.', ',')}
+                      </span>
+                    )}
+                    <span className="text-[10px] sm:text-sm font-normal ml-1">R$</span> 
+                    {produto.preco.toFixed(2).replace('.', ',')}
                   </span>
                   
                   {quantidade > 0 ? (

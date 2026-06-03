@@ -14,7 +14,10 @@ export default function ModalProdutoDetalhe({ produto, fechar, adicionarAoCarrin
   
   const itemNoCarrinho = carrinho.find(item => item.id === produto.id);
   const quantidade = itemNoCarrinho ? itemNoCarrinho.quantidade : 0;
-  const itensInclusos = produto.descricao.split(/, | e | \./).filter(item => item.trim() !== "");
+  
+  // Tratamento de segurança caso o produto não tenha descrição ou seja diferente
+  const descricaoSegura = produto.descricao || "";
+  const itensInclusos = descricaoSegura.split(/, | e | \./).filter(item => item.trim() !== "");
 
   // Lógica da Galeria
   const galeria = produto.imagensGaleria && produto.imagensGaleria.length > 0 
@@ -30,6 +33,11 @@ export default function ModalProdutoDetalhe({ produto, fechar, adicionarAoCarrin
     e.stopPropagation();
     setImagemAtualIndex((prev) => (prev - 1 + galeria.length) % galeria.length);
   };
+
+  // Lógica para exibir categorias corretamente (suportando a nova lista de categorias)
+  const categoriasTexto = produto.categorias 
+    ? produto.categorias.join(' • ') 
+    : produto.categoria;
 
   return (
     <div className="fixed inset-0 z-[70] flex items-center justify-center p-4 sm:p-6">
@@ -51,7 +59,7 @@ export default function ModalProdutoDetalhe({ produto, fechar, adicionarAoCarrin
           {/* Controles da Galeria (Só aparecem se houver mais de 1 imagem) */}
           {galeria.length > 1 && (
             <>
-              {/* Seta Esquerda - Ajustada para Mobile! */}
+              {/* Seta Esquerda */}
               <button 
                 onClick={imagemAnterior}
                 className="absolute left-2 top-1/2 -translate-y-1/2 p-2 bg-white/80 hover:bg-white backdrop-blur rounded-full text-stone-800 transition-all active:scale-90 opacity-100 md:opacity-0 md:group-hover:opacity-100 shadow-sm z-10"
@@ -60,7 +68,7 @@ export default function ModalProdutoDetalhe({ produto, fechar, adicionarAoCarrin
                 <ChevronLeft className="w-5 h-5" />
               </button>
 
-              {/* Seta Direita - Ajustada para Mobile! */}
+              {/* Seta Direita */}
               <button 
                 onClick={proximaImagem}
                 className="absolute right-2 top-1/2 -translate-y-1/2 p-2 bg-white/80 hover:bg-white backdrop-blur rounded-full text-stone-800 transition-all active:scale-90 opacity-100 md:opacity-0 md:group-hover:opacity-100 shadow-sm z-10"
@@ -90,7 +98,9 @@ export default function ModalProdutoDetalhe({ produto, fechar, adicionarAoCarrin
             </button>
           </div>
           
-          <span className="text-rose-500 font-bold text-xs uppercase tracking-wider mb-2 block">{produto.categoria}</span>
+          <span className="text-rose-500 font-bold text-xs uppercase tracking-wider mb-2 block">
+            {categoriasTexto}
+          </span>
           <h2 className="text-2xl font-serif font-bold text-stone-800 mb-4 leading-tight">{produto.nome}</h2>
           
           <div className="mb-6">
@@ -122,9 +132,20 @@ export default function ModalProdutoDetalhe({ produto, fechar, adicionarAoCarrin
           </div>
 
           <div className="mt-auto pt-6 border-t border-stone-50">
+            
+            {/* Secção de Preços Atualizada */}
             <div className="flex items-end justify-between mb-4">
               <span className="text-sm text-stone-500">Valor un.</span>
-              <span className="text-3xl font-bold text-rose-600">R$ {produto.preco.toFixed(2).replace('.', ',')}</span>
+              <div className="flex flex-col items-end">
+                {produto.precoAntigo && (
+                  <span className="text-sm text-stone-400 line-through mb-1">
+                    De: R$ {produto.precoAntigo.toFixed(2).replace('.', ',')}
+                  </span>
+                )}
+                <span className="text-3xl font-bold text-rose-600">
+                  R$ {produto.preco.toFixed(2).replace('.', ',')}
+                </span>
+              </div>
             </div>
 
             {quantidade > 0 ? (

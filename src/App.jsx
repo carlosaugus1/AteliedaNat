@@ -92,12 +92,12 @@ export default function App() {
     window.open(`https://wa.me/${CONFIG.NUMERO_WHATSAPP}?text=${mensagem}`, '_blank');
   };
 
-  const produtosFiltrados = termoPesquisa.trim() !== '' 
+const produtosFiltrados = termoPesquisa.trim() !== '' 
     ? PRODUTOS.filter(produto => 
         produto.nome.toLowerCase().includes(termoPesquisa.toLowerCase()) || 
         produto.descricao.toLowerCase().includes(termoPesquisa.toLowerCase())
       )
-    : (categoriaAtiva === 'Todas' ? PRODUTOS : PRODUTOS.filter(produto => produto.categoria === categoriaAtiva));
+    : (categoriaAtiva === 'Todas' ? PRODUTOS : PRODUTOS.filter(produto => produto.categorias.includes(categoriaAtiva)));
 
   return (
     <div className="min-h-screen bg-stone-50 font-sans selection:bg-rose-200">
