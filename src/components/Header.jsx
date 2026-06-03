@@ -11,7 +11,7 @@ export default function Header({ quantidadeItens, setCarrinhoAberto, termoPesqui
           
           <div className="absolute left-1/2 -translate-x-1/2 flex items-center justify-center hover:scale-105 transition-transform duration-300 cursor-pointer active:scale-95">
             <img 
-              src="/public/logo-atelie.png"
+              src="/logo-atelie.png"
               alt="Logo Ateliê da Nat" 
               className="h-14 sm:h-16 object-contain"
             />
