@@ -20,7 +20,7 @@ export default function Footer() {
               <a href={`https://wa.me/${CONFIG.NUMERO_WHATSAPP}`} target="_blank" rel="noopener noreferrer" className="flex items-center gap-2 px-4 py-2 bg-stone-800 hover:bg-green-600/20 hover:text-green-400 text-stone-300 rounded-full transition-colors border border-stone-700 hover:border-green-500 active:scale-95">
                 <Smartphone className="w-4 h-4" /> <span className="text-sm font-medium">WhatsApp</span>
               </a>
-              <a href="[https://instagram.com/ateliedanat](https://instagram.com/ateliedanat)" target="_blank" rel="noopener noreferrer" className="flex items-center gap-2 px-4 py-2 bg-stone-800 hover:bg-pink-600/20 hover:text-pink-400 text-stone-300 rounded-full transition-colors border border-stone-700 hover:border-pink-400 active:scale-95">
+              <a href="[https://instagram.com/ateliedanat](https://instagram.com/_ateliedanat)" target="_blank" rel="noopener noreferrer" className="flex items-center gap-2 px-4 py-2 bg-stone-800 hover:bg-pink-600/20 hover:text-pink-400 text-stone-300 rounded-full transition-colors border border-stone-700 hover:border-pink-400 active:scale-95">
                 <IconeInstagram /> <span className="text-sm font-medium">Instagram</span>
               </a>
             </div>
