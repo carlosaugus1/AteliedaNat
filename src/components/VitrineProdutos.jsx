@@ -2,9 +2,9 @@ import React from 'react';
 import { Search, Minus, Plus } from 'lucide-react';
 
 export default function VitrineProdutos({ produtos, adicionarAoCarrinho, atualizarQuantidade, carrinho, setProdutoSelecionado }) {
+  // A MÁGICA ESTÁ AQUI: Responsividade fluida para 2, 3, 4 ou 5 colunas dependendo do ecrã!
   return (
     <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-3 sm:gap-6">
-      {/* A MÁGICA ESTÁ AQUI: Responsividade fluida para 2, 3, 4 ou 5 colunas dependendo do ecrã! */}
       {produtos.length === 0 ? (
         <div className="col-span-full flex flex-col items-center justify-center py-16 text-stone-400">
           <Search className="w-12 h-12 mb-4 opacity-20" />
