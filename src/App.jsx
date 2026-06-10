@@ -92,12 +92,19 @@ export default function App() {
     window.open(`https://wa.me/${CONFIG.NUMERO_WHATSAPP}?text=${mensagem}`, '_blank');
   };
 
-const produtosFiltrados = termoPesquisa.trim() !== '' 
-    ? PRODUTOS.filter(produto => 
-        produto.nome.toLowerCase().includes(termoPesquisa.toLowerCase()) || 
-        produto.descricao.toLowerCase().includes(termoPesquisa.toLowerCase())
-      )
-    : (categoriaAtiva === 'Todas' ? PRODUTOS : PRODUTOS.filter(produto => produto.categorias.includes(categoriaAtiva)));
+  // BLINDAGEM DE SEGURANÇA: Evita o ecrã branco se um produto não tiver a propriedade 'categorias' (no plural)
+  const produtosFiltrados = termoPesquisa.trim() !== '' 
+    ? PRODUTOS.filter(produto => {
+        const nome = produto.nome || '';
+        const descricao = produto.descricao || '';
+        return nome.toLowerCase().includes(termoPesquisa.toLowerCase()) || 
+               descricao.toLowerCase().includes(termoPesquisa.toLowerCase());
+      })
+    : (categoriaAtiva === 'Todas' ? PRODUTOS : PRODUTOS.filter(produto => {
+        // Se o produto tiver "categorias", usa. Se tiver só "categoria", transforma numa lista e usa na mesma.
+        const listaSegura = produto.categorias ? produto.categorias : [produto.categoria];
+        return listaSegura.includes(categoriaAtiva);
+      }));
 
   return (
     <div className="min-h-screen bg-stone-50 font-sans selection:bg-rose-200">
