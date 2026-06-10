@@ -3,7 +3,8 @@ import { Search, Minus, Plus } from 'lucide-react';
 
 export default function VitrineProdutos({ produtos, adicionarAoCarrinho, atualizarQuantidade, carrinho, setProdutoSelecionado }) {
   return (
-    <div className="grid grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-10">
+    <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-3 sm:gap-6">
+      {/* A MÁGICA ESTÁ AQUI: Responsividade fluida para 2, 3, 4 ou 5 colunas dependendo do ecrã! */}
       {produtos.length === 0 ? (
         <div className="col-span-full flex flex-col items-center justify-center py-16 text-stone-400">
           <Search className="w-12 h-12 mb-4 opacity-20" />
@@ -14,7 +15,6 @@ export default function VitrineProdutos({ produtos, adicionarAoCarrinho, atualiz
           const itemNoCarrinho = carrinho.find(item => item.id === produto.id);
           const quantidade = itemNoCarrinho ? itemNoCarrinho.quantidade : 0;
           
-          // Prepara a lista de categorias para ser desenhada
           const listaCategorias = produto.categorias ? produto.categorias : [produto.categoria];
 
           return (
@@ -31,7 +31,6 @@ export default function VitrineProdutos({ produtos, adicionarAoCarrinho, atualiz
                   className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
                 />
                 
-                {/* Etiquetas de Categorias (Agora suporta múltiplas pílulas lado a lado) */}
                 <div className="absolute top-2 left-2 sm:top-4 sm:left-4 flex flex-wrap gap-1.5 max-w-[80%]">
                   {listaCategorias.map((cat, index) => (
                     <span 
@@ -50,45 +49,44 @@ export default function VitrineProdutos({ produtos, adicionarAoCarrinho, atualiz
                 )}
               </div>
 
-              <div className="p-3 sm:p-6 flex-1 flex flex-col">
-                <h3 className="text-sm sm:text-xl font-bold text-stone-800 mb-1 sm:mb-2 font-serif line-clamp-2 sm:line-clamp-1 leading-tight">
+              <div className="p-3 sm:p-5 flex-1 flex flex-col">
+                <h3 className="text-sm sm:text-lg font-bold text-stone-800 mb-1 sm:mb-2 font-serif line-clamp-2 sm:line-clamp-1 leading-tight">
                   {produto.nome}
                 </h3>
-                <p className="text-stone-500 text-[10px] sm:text-sm mb-2 sm:mb-4 line-clamp-2 flex-1">
+                <p className="text-stone-500 text-[10px] sm:text-xs mb-2 sm:mb-4 line-clamp-2 flex-1">
                   {produto.descricao}
                 </p>
                 
                 <div className="flex items-center justify-between mt-auto pt-2 border-t border-stone-50" onClick={(e) => e.stopPropagation()}>
-                  <span className="text-sm sm:text-2xl font-bold text-rose-600 flex items-baseline gap-1">
-                    {/* Exibe o preço antigo cortado se ele existir */}
+                  <span className="text-sm sm:text-xl font-bold text-rose-600 flex items-baseline gap-1">
                     {produto.precoAntigo && (
-                      <span className="text-[10px] sm:text-sm text-stone-400 line-through font-normal">
+                      <span className="text-[10px] sm:text-xs text-stone-400 line-through font-normal">
                         R$ {produto.precoAntigo.toFixed(2).replace('.', ',')}
                       </span>
                     )}
-                    <span className="text-[10px] sm:text-sm font-normal ml-1">R$</span> 
+                    <span className="text-[10px] sm:text-xs font-normal ml-1">R$</span> 
                     {produto.preco.toFixed(2).replace('.', ',')}
                   </span>
                   
                   {quantidade > 0 ? (
-                    <div className="flex items-center gap-1 sm:gap-3 bg-stone-100 rounded-full px-1.5 py-1 sm:px-3 sm:py-1.5 border border-stone-200">
-                      <button onClick={() => atualizarQuantidade(produto.id, -1)} className="text-stone-500 hover:text-rose-600 active:scale-90 p-1 sm:p-1">
-                        <Minus className="w-3 h-3 sm:w-4 sm:h-4" />
+                    <div className="flex items-center gap-1 sm:gap-2 bg-stone-100 rounded-full px-1.5 py-1 sm:px-2 sm:py-1 border border-stone-200">
+                      <button onClick={() => atualizarQuantidade(produto.id, -1)} className="text-stone-500 hover:text-rose-600 active:scale-90 p-1">
+                        <Minus className="w-3 h-3" />
                       </button>
-                      <span className="text-xs sm:text-sm font-bold text-stone-800 w-3 sm:w-4 text-center">{quantidade}</span>
-                      <button onClick={() => atualizarQuantidade(produto.id, 1)} className="text-stone-500 hover:text-green-600 active:scale-90 p-1 sm:p-1">
-                        <Plus className="w-3 h-3 sm:w-4 sm:h-4" />
+                      <span className="text-xs font-bold text-stone-800 w-3 sm:w-4 text-center">{quantidade}</span>
+                      <button onClick={() => atualizarQuantidade(produto.id, 1)} className="text-stone-500 hover:text-green-600 active:scale-90 p-1">
+                        <Plus className="w-3 h-3" />
                       </button>
                     </div>
                   ) : (
                     <button
                       onClick={() => adicionarAoCarrinho(produto)}
-                      className="flex items-center justify-center sm:gap-2 bg-stone-800 hover:bg-rose-500 text-white w-7 h-7 sm:w-auto sm:px-4 sm:py-2 rounded-full transition-colors active:scale-95 font-medium text-sm shadow-md shadow-stone-800/10"
+                      className="flex items-center justify-center sm:gap-1 bg-stone-800 hover:bg-rose-500 text-white w-7 h-7 sm:w-auto sm:px-3 sm:py-1.5 rounded-full transition-colors active:scale-95 font-medium text-xs shadow-md shadow-stone-800/10"
                       aria-label="Adicionar ao carrinho"
                     >
                       <Plus className="w-4 h-4 sm:hidden" />
-                      <Plus className="w-4 h-4 hidden sm:block" /> 
-                      <span className="hidden sm:inline">Adicionar</span>
+                      <Plus className="w-3 h-3 hidden sm:block" /> 
+                      <span className="hidden sm:inline">Add</span>
                     </button>
                   )}
                 </div>

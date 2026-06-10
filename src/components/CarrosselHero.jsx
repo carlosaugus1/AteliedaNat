@@ -4,7 +4,8 @@ import { PapelRasgadoBase } from './efeitos/PapelRasgado';
 
 export default function CarrosselHero({ slideAtual, setSlideAtual, aoClicarNoSlide }) {
   return (
-    <section className="relative w-full h-[40vh] md:h-[60vh] overflow-hidden bg-stone-200">
+    // Altura ajustada: 40vh no telemóvel, mas limitada a 400px/450px no computador
+    <section className="relative w-full h-[40vh] md:h-[400px] lg:h-[450px] overflow-hidden bg-stone-200">
       {CARROSSEL_SLIDES.map((slide, idx) => (
         <div
           key={idx}
@@ -19,9 +20,9 @@ export default function CarrosselHero({ slideAtual, setSlideAtual, aoClicarNoSli
             className="w-full h-full object-cover object-center blur-[4px] scale-110 transition-transform duration-1000"
             loading={idx === 0 ? "eager" : "lazy"}
           />
-        
+          
           <div className="absolute inset-0 bg-black/30 flex items-center justify-center p-4">
-              <h2 className={`text-3xl md:text-5xl lg:text-6xl font-serif font-bold text-center leading-tight drop-shadow-md max-w-3xl ${slide.corTexto}`}>
+              <h2 className={`text-3xl md:text-5xl lg:text-5xl font-serif font-bold text-center leading-tight drop-shadow-md max-w-3xl ${slide.corTexto}`}>
                   {slide.titulo}
               </h2>
           </div>

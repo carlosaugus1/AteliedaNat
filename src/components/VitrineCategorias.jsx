@@ -1,75 +1,100 @@
-import React, { useRef } from 'react';
-import { ChevronLeft, ChevronRight, Heart } from 'lucide-react';
-import { CATEGORIAS } from '../data/mockData';
+import React from 'react';
+import { Search, Minus, Plus } from 'lucide-react';
 
-export default function VitrineCategorias({ categoriaAtiva, setCategoriaAtiva }) {
-  const scrollRef = useRef(null);
-
-  const rolar = (direcao) => {
-    if (scrollRef.current) {
-      scrollRef.current.scrollBy({ left: direcao === 'esq' ? -300 : 300, behavior: 'smooth' });
-    }
-  };
-
+export default function VitrineProdutos({ produtos, adicionarAoCarrinho, atualizarQuantidade, carrinho, setProdutoSelecionado }) {
   return (
-    <div className="mb-16 relative group">
-      <button 
-        onClick={() => rolar('esq')}
-        className="hidden md:flex absolute left-0 top-1/2 -translate-y-1/2 -translate-x-4 z-20 w-12 h-12 bg-white/90 backdrop-blur shadow-md rounded-full items-center justify-center text-stone-500 hover:text-rose-600 hover:scale-105 transition-all opacity-0 group-hover:opacity-100 border border-stone-100"
-        aria-label="Rolar para a esquerda"
-      >
-        <ChevronLeft className="w-7 h-7 -ml-1" />
-      </button>
-
-      <div 
-        ref={scrollRef}
-        className="flex overflow-x-auto gap-4 sm:gap-6 py-8 px-2 hide-scrollbar snap-x snap-mandatory scroll-smooth"
-      >
-        <div 
-          onClick={() => setCategoriaAtiva('Todas')}
-          className={`relative flex-shrink-0 w-32 h-24 sm:w-40 sm:h-28 rounded-[2rem] overflow-hidden cursor-pointer snap-center transition-all duration-300 hover:scale-105 active:scale-95 ${categoriaAtiva === 'Todas' ? 'ring-4 ring-rose-400 ring-offset-4 shadow-xl scale-105' : 'opacity-90 hover:opacity-100'}`}
-        >
-          <div className="absolute inset-0 bg-stone-800 flex items-center justify-center">
-            <span className="text-white font-bold font-serif relative z-10 text-sm sm:text-base tracking-wider">TODAS</span>
-          </div>
+    <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-3 sm:gap-6">
+      {/* A MÁGICA ESTÁ AQUI: Responsividade fluida para 2, 3, 4 ou 5 colunas dependendo do ecrã! */}
+      {produtos.length === 0 ? (
+        <div className="col-span-full flex flex-col items-center justify-center py-16 text-stone-400">
+          <Search className="w-12 h-12 mb-4 opacity-20" />
+          <p className="text-center text-sm sm:text-lg">Nenhum produto encontrado com esta busca.</p>
         </div>
+      ) : (
+        produtos.map((produto) => {
+          const itemNoCarrinho = carrinho.find(item => item.id === produto.id);
+          const quantidade = itemNoCarrinho ? itemNoCarrinho.quantidade : 0;
+          
+          const listaCategorias = produto.categorias ? produto.categorias : [produto.categoria];
 
-        {CATEGORIAS.map((cat) => (
-          <div 
-            key={cat.id}
-            onClick={() => setCategoriaAtiva(cat.nome)}
-            className={`relative flex-shrink-0 w-40 h-24 sm:w-48 sm:h-28 rounded-[2rem] overflow-hidden cursor-pointer snap-center transition-all duration-300 hover:scale-105 active:scale-95 group ${categoriaAtiva === cat.nome ? 'ring-4 ring-rose-400 ring-offset-4 shadow-xl scale-105' : 'opacity-90 hover:opacity-100'}`}
-          >
-            <img 
-              src={cat.imagem} 
-              alt={cat.nome} 
-              loading="lazy"
-              className="absolute inset-0 w-full h-full object-cover blur-[3px] scale-110 group-hover:scale-125 transition-transform duration-700"
-            />
-            <div className={`absolute inset-0 transition-colors duration-300 ${cat.especial ? 'bg-rose-900/40 group-hover:bg-rose-900/30' : 'bg-black/40 group-hover:bg-black/30'}`}></div>
-            <div className="absolute inset-0 flex items-center justify-center text-center p-2">
-              <span className="text-white font-bold font-serif text-sm sm:text-base tracking-wide drop-shadow-md z-10">{cat.nome}</span>
-            </div>
-
-            {cat.especial && (
-              <div className="absolute inset-0 overflow-hidden pointer-events-none">
-                <Heart className="absolute bottom-1 left-4 w-5 h-5 text-rose-300 fill-rose-300 opacity-0 animate-float-heart" />
-                <Heart className="absolute bottom-2 left-1/2 w-6 h-6 text-white fill-white opacity-0 animate-float-heart delay-100" />
-                <Heart className="absolute bottom-0 right-4 w-4 h-4 text-pink-200 fill-pink-200 opacity-0 animate-float-heart delay-300" />
-                <Heart className="absolute bottom-3 right-8 w-5 h-5 text-rose-200 fill-rose-200 opacity-0 animate-float-heart delay-500" />
+          return (
+            <div 
+              key={produto.id} 
+              className="group bg-white rounded-2xl sm:rounded-3xl overflow-hidden shadow-[0_8px_30px_rgb(0,0,0,0.04)] hover:shadow-[0_8px_30px_rgb(0,0,0,0.08)] transition-all duration-300 transform hover:-translate-y-1 border border-stone-100 flex flex-col cursor-pointer"
+              onClick={() => setProdutoSelecionado(produto)}
+            >
+              <div className="relative aspect-[4/3] overflow-hidden bg-stone-100">
+                <img 
+                  src={produto.imagem} 
+                  alt={produto.nome} 
+                  loading="lazy"
+                  className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
+                />
+                
+                <div className="absolute top-2 left-2 sm:top-4 sm:left-4 flex flex-wrap gap-1.5 max-w-[80%]">
+                  {listaCategorias.map((cat, index) => (
+                    <span 
+                      key={index} 
+                      className="bg-white/90 backdrop-blur text-rose-600 text-[9px] sm:text-xs font-bold px-2 py-1 sm:px-3 sm:py-1 rounded-full uppercase tracking-wider shadow-sm truncate max-w-full"
+                    >
+                      {cat}
+                    </span>
+                  ))}
+                </div>
+                
+                {quantidade > 0 && (
+                  <div className="absolute top-2 right-2 sm:top-4 sm:right-4 bg-rose-500 text-white w-6 h-6 sm:w-8 sm:h-8 flex items-center justify-center rounded-full shadow-lg text-xs sm:text-base animate-in fade-in zoom-in-50">
+                    <span className="font-bold">{quantidade}</span>
+                  </div>
+                )}
               </div>
-            )}
-          </div>
-        ))}
-      </div>
 
-      <button 
-        onClick={() => rolar('dir')}
-        className="hidden md:flex absolute right-0 top-1/2 -translate-y-1/2 translate-x-4 z-20 w-12 h-12 bg-white/90 backdrop-blur shadow-md rounded-full items-center justify-center text-stone-500 hover:text-rose-600 hover:scale-105 transition-all opacity-0 group-hover:opacity-100 border border-stone-100"
-        aria-label="Rolar para a direita"
-      >
-        <ChevronRight className="w-7 h-7 ml-1" />
-      </button>
+              <div className="p-3 sm:p-5 flex-1 flex flex-col">
+                <h3 className="text-sm sm:text-lg font-bold text-stone-800 mb-1 sm:mb-2 font-serif line-clamp-2 sm:line-clamp-1 leading-tight">
+                  {produto.nome}
+                </h3>
+                <p className="text-stone-500 text-[10px] sm:text-xs mb-2 sm:mb-4 line-clamp-2 flex-1">
+                  {produto.descricao}
+                </p>
+                
+                <div className="flex items-center justify-between mt-auto pt-2 border-t border-stone-50" onClick={(e) => e.stopPropagation()}>
+                  <span className="text-sm sm:text-xl font-bold text-rose-600 flex items-baseline gap-1">
+                    {produto.precoAntigo && (
+                      <span className="text-[10px] sm:text-xs text-stone-400 line-through font-normal">
+                        R$ {produto.precoAntigo.toFixed(2).replace('.', ',')}
+                      </span>
+                    )}
+                    <span className="text-[10px] sm:text-xs font-normal ml-1">R$</span> 
+                    {produto.preco.toFixed(2).replace('.', ',')}
+                  </span>
+                  
+                  {quantidade > 0 ? (
+                    <div className="flex items-center gap-1 sm:gap-2 bg-stone-100 rounded-full px-1.5 py-1 sm:px-2 sm:py-1 border border-stone-200">
+                      <button onClick={() => atualizarQuantidade(produto.id, -1)} className="text-stone-500 hover:text-rose-600 active:scale-90 p-1">
+                        <Minus className="w-3 h-3" />
+                      </button>
+                      <span className="text-xs font-bold text-stone-800 w-3 sm:w-4 text-center">{quantidade}</span>
+                      <button onClick={() => atualizarQuantidade(produto.id, 1)} className="text-stone-500 hover:text-green-600 active:scale-90 p-1">
+                        <Plus className="w-3 h-3" />
+                      </button>
+                    </div>
+                  ) : (
+                    <button
+                      onClick={() => adicionarAoCarrinho(produto)}
+                      className="flex items-center justify-center sm:gap-1 bg-stone-800 hover:bg-rose-500 text-white w-7 h-7 sm:w-auto sm:px-3 sm:py-1.5 rounded-full transition-colors active:scale-95 font-medium text-xs shadow-md shadow-stone-800/10"
+                      aria-label="Adicionar ao carrinho"
+                    >
+                      <Plus className="w-4 h-4 sm:hidden" />
+                      <Plus className="w-3 h-3 hidden sm:block" /> 
+                      <span className="hidden sm:inline">Add</span>
+                    </button>
+                  )}
+                </div>
+              </div>
+            </div>
+          );
+        })
+      )}
     </div>
   );
 }
