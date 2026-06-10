@@ -60,7 +60,6 @@ export default function VitrineCategorias({ categoriaAtiva, setCategoriaAtiva })
         onMouseLeave={handleMouseLeave}
         onMouseUp={handleMouseUp}
         onMouseMove={handleMouseMove}
-        // Espaçamento (py-6) reduzido para acabar com o espaço vazio, mas protegendo o efeito de escala
         className={`flex overflow-x-auto gap-3 sm:gap-5 py-6 px-4 md:px-8 hide-scrollbar scroll-smooth w-full md:justify-center ${
           isDragging ? 'cursor-grabbing snap-none' : 'cursor-grab snap-x snap-mandatory'
         }`}
