@@ -41,7 +41,7 @@ export default function Footer() {
           <span>© {new Date().getFullYear()} {CONFIG.NOME_ATELIE}. Todos os direitos reservados.</span>
           <span className="text-xs text-stone-500 flex items-center gap-1">
             Desenvolvido por 
-            <a href="[https://www.instagram.com/carlosaugus1/](https://www.instagram.com/carlosaugus1/)" target="_blank" rel="noopener noreferrer" className="text-stone-400 hover:text-rose-400 transition-colors font-medium tracking-wide">
+            <a href="https://www.instagram.com/carlosaugus1/" target="_blank" rel="noopener noreferrer" className="text-stone-400 hover:text-rose-400 transition-colors font-medium tracking-wide">
               @carlosaugus1
             </a>
           </span>

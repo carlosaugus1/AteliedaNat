@@ -34,16 +34,18 @@ export default function App() {
   }, []);
 
   const navegarParaCategoria = (categoriaNome) => {
-      setCategoriaAtiva(categoriaNome);
-      const vitrineElement = document.getElementById('vitrine-ancora');
-      if (vitrineElement) vitrineElement.scrollIntoView({ behavior: 'smooth' });
+    setCategoriaAtiva(categoriaNome);
+    const vitrineElement = document.getElementById('vitrine-ancora');
+    if (vitrineElement) vitrineElement.scrollIntoView({ behavior: 'smooth' });
   };
 
   const adicionarAoCarrinho = (produto) => {
     setCarrinho((prev) => {
       const itemExistente = prev.find((item) => item.id === produto.id);
       if (itemExistente) {
-        return prev.map((item) => item.id === produto.id ? { ...item, quantidade: item.quantidade + 1 } : item);
+        return prev.map((item) =>
+          item.id === produto.id ? { ...item, quantidade: item.quantidade + 1 } : item
+        );
       }
       return [...prev, { ...produto, quantidade: 1 }];
     });
@@ -51,13 +53,15 @@ export default function App() {
 
   const atualizarQuantidade = (id, delta) => {
     setCarrinho((prev) =>
-      prev.map((item) => {
-        if (item.id === id) {
-          const novaQuantidade = item.quantidade + delta;
-          return { ...item, quantidade: Math.max(0, novaQuantidade) };
-        }
-        return item;
-      }).filter((item) => item.quantidade > 0)
+      prev
+        .map((item) => {
+          if (item.id === id) {
+            const novaQuantidade = item.quantidade + delta;
+            return { ...item, quantidade: Math.max(0, novaQuantidade) };
+          }
+          return item;
+        })
+        .filter((item) => item.quantidade > 0)
     );
   };
 
@@ -68,23 +72,27 @@ export default function App() {
       removerDoCarrinho(id);
       return;
     }
-    setCarrinho(prev => prev.map(item => item.id === id ? { ...item, quantidade: qtd } : item));
+    setCarrinho((prev) =>
+      prev.map((item) => (item.id === id ? { ...item, quantidade: qtd } : item))
+    );
   };
 
-  const removerDoCarrinho = (id) => setCarrinho(prev => prev.filter(item => item.id !== id));
-  
+  const removerDoCarrinho = (id) => setCarrinho((prev) => prev.filter((item) => item.id !== id));
   const limparCarrinho = () => setCarrinho([]);
 
-  const totalCarrinho = carrinho.reduce((total, item) => total + (item.preco * item.quantidade), 0);
+  const totalCarrinho = carrinho.reduce((total, item) => total + item.preco * item.quantidade, 0);
   const quantidadeItens = carrinho.reduce((total, item) => total + item.quantidade, 0);
 
   const finalizarPedido = () => {
     if (carrinho.length === 0) return;
+
     const sinal = totalCarrinho / 2;
     let mensagem = `Olá, Nat! Gostaria de fazer uma encomenda para o Dia dos Namorados:%0A%0A`;
-    carrinho.forEach(item => {
+
+    carrinho.forEach((item) => {
       mensagem += `*${item.quantidade}x* ${item.nome} - R$ ${(item.preco * item.quantidade).toFixed(2)}%0A`;
     });
+
     mensagem += `%0A*Total da Encomenda:* R$ ${totalCarrinho.toFixed(2)}%0A`;
     mensagem += `*Sinal para confirmação (50%):* R$ ${sinal.toFixed(2)}%0A%0A`;
     mensagem += `Como podemos prosseguir com o pagamento do sinal e detalhes da entrega?`;
@@ -92,19 +100,22 @@ export default function App() {
     window.open(`https://wa.me/${CONFIG.NUMERO_WHATSAPP}?text=${mensagem}`, '_blank');
   };
 
-  // BLINDAGEM DE SEGURANÇA: Evita o ecrã branco se um produto não tiver a propriedade 'categorias' (no plural)
-  const produtosFiltrados = termoPesquisa.trim() !== '' 
-    ? PRODUTOS.filter(produto => {
-        const nome = produto.nome || '';
-        const descricao = produto.descricao || '';
-        return nome.toLowerCase().includes(termoPesquisa.toLowerCase()) || 
-               descricao.toLowerCase().includes(termoPesquisa.toLowerCase());
-      })
-    : (categoriaAtiva === 'Todas' ? PRODUTOS : PRODUTOS.filter(produto => {
-        // Se o produto tiver "categorias", usa. Se tiver só "categoria", transforma numa lista e usa na mesma.
-        const listaSegura = produto.categorias ? produto.categorias : [produto.categoria];
-        return listaSegura.includes(categoriaAtiva);
-      }));
+  const produtosFiltrados =
+    termoPesquisa.trim() !== ''
+      ? PRODUTOS.filter((produto) => {
+          const nome = produto.nome || '';
+          const descricao = produto.descricao || '';
+          return (
+            nome.toLowerCase().includes(termoPesquisa.toLowerCase()) ||
+            descricao.toLowerCase().includes(termoPesquisa.toLowerCase())
+          );
+        })
+      : categoriaAtiva === 'Todas'
+      ? PRODUTOS
+      : PRODUTOS.filter((produto) => {
+          const listaSegura = produto.categorias ? produto.categorias : [produto.categoria];
+          return listaSegura.includes(categoriaAtiva);
+        });
 
   return (
     <div className="min-h-screen bg-stone-50 font-sans selection:bg-rose-200">
@@ -130,79 +141,104 @@ export default function App() {
         }
       `}</style>
 
-      <Header 
-        quantidadeItens={quantidadeItens} 
-        setCarrinhoAberto={setCarrinhoAberto} 
+      <Header
+        quantidadeItens={quantidadeItens}
+        setCarrinhoAberto={setCarrinhoAberto}
         termoPesquisa={termoPesquisa}
         setTermoPesquisa={setTermoPesquisa}
         produtosSugeridos={produtosFiltrados}
         setProdutoSelecionado={setProdutoSelecionado}
       />
-      
-      <CarrosselHero slideAtual={slideAtual} setSlideAtual={setSlideAtual} aoClicarNoSlide={navegarParaCategoria} />
 
-      <main className="max-w-6xl mx-auto px-4 py-16 md:py-24" id="vitrine-ancora">
+      <CarrosselHero
+        slideAtual={slideAtual}
+        setSlideAtual={setSlideAtual}
+        aoClicarNoSlide={navegarParaCategoria}
+      />
+
+      <main
+        className="max-w-6xl 2xl:max-w-[1600px] mx-auto px-4 xl:px-6 2xl:px-8 py-16 md:py-24"
+        id="vitrine-ancora"
+      >
         <div className="text-center mb-14">
-          <h2 className="text-3xl md:text-4xl font-serif font-bold text-stone-800 mb-4">Coleção Exclusiva</h2>
-          <p className="text-stone-600 max-w-2xl mx-auto">Navegue por nossas categorias e encontre o presente perfeito.</p>
+          <h2 className="text-3xl md:text-4xl font-serif font-bold text-stone-800 mb-4">
+            Coleção Exclusiva
+          </h2>
+          <p className="text-stone-600 max-w-2xl mx-auto">
+            Navegue por nossas categorias e encontre o presente perfeito.
+          </p>
         </div>
 
         <VitrineCategorias categoriaAtiva={categoriaAtiva} setCategoriaAtiva={setCategoriaAtiva} />
-        
+
         {categoriaAtiva === 'Velas' && (
           <div className="bg-rose-50/80 border border-rose-100 rounded-2xl p-4 mb-8 flex items-start gap-3 max-w-3xl mx-auto animate-in fade-in slide-in-from-top-4 shadow-sm">
             <Info className="w-6 h-6 text-rose-500 flex-shrink-0 mt-0.5" />
             <div>
-              <strong className="block text-rose-800 mb-1 text-sm md:text-base">Muitos aromas disponíveis! ✨</strong>
+              <strong className="block text-rose-800 mb-1 text-sm md:text-base">
+                Muitos aromas disponíveis! ✨
+              </strong>
               <p className="text-stone-700 text-xs md:text-sm leading-relaxed">
-                Ao nos enviar seu pedido pelo WhatsApp, passaremos a lista completa de aromas para você escolher o seu favorito.
+                Ao nos enviar seu pedido pelo WhatsApp, passaremos a lista completa de aromas para
+                você escolher o seu favorito.
               </p>
             </div>
           </div>
         )}
 
-        <VitrineProdutos 
-          produtos={produtosFiltrados} 
+        <VitrineProdutos
+          produtos={produtosFiltrados}
           carrinho={carrinho}
-          adicionarAoCarrinho={adicionarAoCarrinho} 
+          adicionarAoCarrinho={adicionarAoCarrinho}
           atualizarQuantidade={atualizarQuantidade}
           setProdutoSelecionado={setProdutoSelecionado}
         />
       </main>
 
-      <ModalProdutoDetalhe 
-        produto={produtoSelecionado} 
+      <ModalProdutoDetalhe
+        produto={produtoSelecionado}
         fechar={() => setProdutoSelecionado(null)}
         adicionarAoCarrinho={adicionarAoCarrinho}
         atualizarQuantidade={atualizarQuantidade}
         carrinho={carrinho}
       />
 
-      <ModalCarrinho 
-        carrinhoAberto={carrinhoAberto} 
-        setCarrinhoAberto={setCarrinhoAberto} 
-        carrinho={carrinho} 
-        atualizarQuantidade={atualizarQuantidade} 
+      <ModalCarrinho
+        carrinhoAberto={carrinhoAberto}
+        setCarrinhoAberto={setCarrinhoAberto}
+        carrinho={carrinho}
+        atualizarQuantidade={atualizarQuantidade}
         atualizarQuantidadeExata={atualizarQuantidadeExata}
         removerDoCarrinho={removerDoCarrinho}
         limparCarrinho={limparCarrinho}
-        totalCarrinho={totalCarrinho} 
-        finalizarPedido={finalizarPedido} 
+        totalCarrinho={totalCarrinho}
+        finalizarPedido={finalizarPedido}
       />
 
-      {/* Botões Flutuantes */}
-      <div className={`fixed top-4 right-4 z-[55] transition-all duration-500 ${isScrolled ? 'opacity-100 translate-y-0' : 'opacity-0 -translate-y-10 pointer-events-none'}`}>
-        <button 
+      <div
+        className={`fixed top-4 right-4 z-[55] transition-all duration-500 ${
+          isScrolled ? 'opacity-100 translate-y-0' : 'opacity-0 -translate-y-10 pointer-events-none'
+        }`}
+      >
+        <button
           onClick={() => setCarrinhoAberto(true)}
           className="relative p-3 bg-white text-rose-600 rounded-full shadow-[0_8px_30px_rgb(0,0,0,0.12)] hover:bg-rose-50 transition-colors active:scale-90 border border-rose-100"
         >
           <ShoppingBag className="w-6 h-6" />
-          {quantidadeItens > 0 && <span className="absolute -top-1 -right-1 bg-rose-500 text-white text-xs font-bold w-5 h-5 flex items-center justify-center rounded-full animate-pulse">{quantidadeItens}</span>}
+          {quantidadeItens > 0 && (
+            <span className="absolute -top-1 -right-1 bg-rose-500 text-white text-xs font-bold w-5 h-5 flex items-center justify-center rounded-full animate-pulse">
+              {quantidadeItens}
+            </span>
+          )}
         </button>
       </div>
 
-      <div className={`fixed bottom-6 right-4 sm:right-6 z-[55] transition-all duration-500 ${isScrolled ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10 pointer-events-none'}`}>
-        <button 
+      <div
+        className={`fixed bottom-6 right-4 sm:right-6 z-[55] transition-all duration-500 ${
+          isScrolled ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10 pointer-events-none'
+        }`}
+      >
+        <button
           onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
           className="p-3 bg-rose-500/90 backdrop-blur-sm text-white rounded-full shadow-[0_8px_30px_rgb(0,0,0,0.12)] hover:bg-stone-800 transition-colors active:scale-90"
         >
