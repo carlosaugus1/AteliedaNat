@@ -3,12 +3,36 @@ import { X, Heart, CheckCircle2, Minus, Plus, ShoppingBag, ChevronLeft, ChevronR
 
 export default function ModalProdutoDetalhe({ produto, fechar, adicionarAoCarrinho, atualizarQuantidade, carrinho }) {
   const [imagemAtualIndex, setImagemAtualIndex] = useState(0);
-  const [isZoomed, setIsZoomed] = useState(false); // Estado para controlar ecrã inteiro
+  const [isZoomed, setIsZoomed] = useState(false); 
 
-  // Estados para detectar o deslizar (swipe)
   const [touchStart, setTouchStart] = useState(null);
   const [touchEnd, setTouchEnd] = useState(null);
 
+  // Lógica inteligente para o botão físico "Voltar" do Smartphone
+  useEffect(() => {
+    if (!produto) return;
+
+    // Quando abre, regista no histórico do navegador
+    window.history.pushState({ modalAberto: true }, '');
+
+    const handleBotaoVoltarFisico = () => {
+      if (isZoomed) {
+        setIsZoomed(false); // Se a foto estiver grande, fecha a foto
+        // Cria novamente a entrada no histórico para o modal principal não fechar de vez
+        window.history.pushState({ modalAberto: true }, ''); 
+      } else {
+        fechar(); // Se a foto não estiver grande, fecha o produto
+      }
+    };
+
+    window.addEventListener('popstate', handleBotaoVoltarFisico);
+
+    return () => {
+      window.removeEventListener('popstate', handleBotaoVoltarFisico);
+    };
+  }, [produto, isZoomed, fechar]);
+
+  // Reseta a foto quando abre um novo produto
   useEffect(() => {
     if (produto) {
       setImagemAtualIndex(0);
@@ -38,7 +62,6 @@ export default function ModalProdutoDetalhe({ produto, fechar, adicionarAoCarrin
     setImagemAtualIndex((prev) => (prev - 1 + galeria.length) % galeria.length);
   };
 
-  // Funções de Gestão de Toque (Swipe)
   const onTouchStartEvent = (e) => {
     setTouchEnd(null);
     setTouchStart(e.targetTouches[0].clientX);
@@ -51,15 +74,9 @@ export default function ModalProdutoDetalhe({ produto, fechar, adicionarAoCarrin
   const onTouchEndEvent = () => {
     if (!touchStart || !touchEnd) return;
     const distance = touchStart - touchEnd;
-    const isLeftSwipe = distance > 50;
-    const isRightSwipe = distance < -50;
-
-    if (isLeftSwipe) {
-      proximaImagem();
-    }
-    if (isRightSwipe) {
-      imagemAnterior();
-    }
+    
+    if (distance > 50) proximaImagem();
+    if (distance < -50) imagemAnterior();
   };
 
   const categoriasTexto = produto.categorias 
@@ -68,12 +85,10 @@ export default function ModalProdutoDetalhe({ produto, fechar, adicionarAoCarrin
 
   return (
     <>
-      {/* MODAL PRINCIPAL */}
       <div className="fixed inset-0 z-[70] flex items-center justify-center p-4 sm:p-6">
         <div className="absolute inset-0 bg-stone-900/60 backdrop-blur-sm" onClick={fechar}></div>
         <div className="relative bg-white w-full max-w-2xl rounded-[2rem] shadow-2xl overflow-hidden flex flex-col md:flex-row animate-in fade-in zoom-in-95 duration-200 max-h-[90vh]">
           
-          {/* Lado Esquerdo: Galeria de Imagens */}
           <div 
             className="w-full md:w-1/2 h-64 md:h-auto relative bg-stone-100 group cursor-zoom-in"
             onTouchStart={onTouchStartEvent}
@@ -84,10 +99,9 @@ export default function ModalProdutoDetalhe({ produto, fechar, adicionarAoCarrin
             <img 
               src={galeria[imagemAtualIndex]} 
               alt={`${produto.nome} - Imagem ${imagemAtualIndex + 1}`} 
-              className="absolute inset-0 w-full h-full object-cover transition-opacity duration-300" 
+              className="absolute inset-0 w-full h-full object-cover transition-opacity duration-300 pointer-events-none" 
             />
             
-            {/* Ícone indicando que pode ampliar (Lindo detalhe de UX) */}
             <div className="absolute top-4 left-4 bg-white/70 backdrop-blur p-1.5 rounded-full text-stone-700 opacity-80 md:opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none">
                <Maximize2 className="w-4 h-4" />
             </div>
@@ -101,14 +115,12 @@ export default function ModalProdutoDetalhe({ produto, fechar, adicionarAoCarrin
                 <button 
                   onClick={imagemAnterior}
                   className="absolute left-2 top-1/2 -translate-y-1/2 p-2 bg-white/80 hover:bg-white backdrop-blur rounded-full text-stone-800 transition-all active:scale-90 opacity-100 md:opacity-0 md:group-hover:opacity-100 shadow-sm z-10"
-                  aria-label="Imagem anterior"
                 >
                   <ChevronLeft className="w-5 h-5" />
                 </button>
                 <button 
                   onClick={proximaImagem}
                   className="absolute right-2 top-1/2 -translate-y-1/2 p-2 bg-white/80 hover:bg-white backdrop-blur rounded-full text-stone-800 transition-all active:scale-90 opacity-100 md:opacity-0 md:group-hover:opacity-100 shadow-sm z-10"
-                  aria-label="Próxima imagem"
                 >
                   <ChevronRight className="w-5 h-5" />
                 </button>
@@ -124,7 +136,6 @@ export default function ModalProdutoDetalhe({ produto, fechar, adicionarAoCarrin
             )}
           </div>
 
-          {/* Lado Direito: Detalhes e Carrinho */}
           <div className="w-full md:w-1/2 p-6 sm:p-8 flex flex-col overflow-y-auto hide-scrollbar">
             <div className="hidden md:flex justify-end mb-2">
               <button onClick={fechar} className="p-2 text-stone-400 hover:text-stone-800 bg-stone-50 rounded-full active:scale-90 transition-colors">
@@ -203,9 +214,11 @@ export default function ModalProdutoDetalhe({ produto, fechar, adicionarAoCarrin
         </div>
       </div>
 
-      {/* LUZ DE ECRÃ INTEIRO (LIGHTBOX) PARA VER FOTO COMPLETA COM SWIPE */}
       {isZoomed && (
-        <div className="fixed inset-0 z-[100] bg-black/95 flex items-center justify-center animate-in fade-in duration-200">
+        <div 
+          className="fixed inset-0 z-[100] bg-black/95 flex items-center justify-center animate-in fade-in duration-200"
+          onClick={() => setIsZoomed(false)} // FECHA A FOTO AO CLICAR NO FUNDO PRETO
+        >
           <button 
             onClick={() => setIsZoomed(false)} 
             className="absolute top-4 right-4 sm:top-8 sm:right-8 p-3 text-white/70 hover:text-white bg-white/10 rounded-full z-50 active:scale-90 transition-all"
@@ -219,10 +232,10 @@ export default function ModalProdutoDetalhe({ produto, fechar, adicionarAoCarrin
             onTouchMove={onTouchMoveEvent}
             onTouchEnd={onTouchEndEvent}
           >
-            {/* Foto completa sem cortes (object-contain) */}
             <img 
               src={galeria[imagemAtualIndex]} 
               alt={`${produto.nome} Ampliada`} 
+              onClick={(e) => e.stopPropagation()} // IMPEDE FECHAR SE CLICAR EM CIMA DA FOTO
               className="max-w-full max-h-full object-contain p-2 sm:p-12 transition-transform duration-300"
             />
 
